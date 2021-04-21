@@ -1,0 +1,30 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sealed-secrets-role
+rules:
+  - verbs:
+      - use
+    apiGroups:
+      - security.openshift.io
+    resources:
+      - securitycontextconstraints
+    resourceNames:
+      - nonroot
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sealed-secrets-rb
+subjects:
+  - kind: ServiceAccount
+    name: sealed-secrets
+    namespace: sealed-secrets
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sealed-secrets-role
+
+#
+# kubectl create clusterrole sealed-secrets-role --verb=use --resource=scc --resource-name=nonroot
+# kubectl create clusterrolebinding sealed-secrets-rb --clusterrole=sealed-secrets-role --serviceaccount=sealed-secrets:sealed-secrets

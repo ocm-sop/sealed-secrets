@@ -13,3 +13,4 @@ helmChartInflationGenerator:
 
 resources:
   - namespace.yaml
+  - rbac.yaml
